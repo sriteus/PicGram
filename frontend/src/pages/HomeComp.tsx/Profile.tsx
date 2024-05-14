@@ -68,15 +68,17 @@ const Profile: React.FC = () => {
 
   const handleScroll = (event: any) => {
     const { scrollTop, clientHeight, scrollHeight } = event.currentTarget;
-    if (scrollHeight - scrollTop === clientHeight && !loading) {
-      fetchPosts();
-      console.log("Fetching Posts");
+
+    if (scrollTop > 0) {
+      const scrollBottom = scrollHeight - (scrollTop + clientHeight);
+      const fetchThreshold = 200;
+
+      if (scrollBottom < fetchThreshold && !loading) {
+        fetchPosts();
+        console.log("Fetching Posts");
+      }
     }
   };
-
-  if (!userData) {
-    return null;
-  }
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -101,7 +103,10 @@ const Profile: React.FC = () => {
             }}
             onScroll={handleScroll}
           >
-            <Typography variant="h6">{userData.username}</Typography>
+            {userData && (
+              <Typography variant="h6">{userData.username}</Typography>
+            )}
+
             <Grid container spacing={2}>
               {post.map((value, index) => (
                 <Grid item xs={4} key={index}>

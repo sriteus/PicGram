@@ -7,6 +7,7 @@ import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import Nav from "./HomeComp.tsx/Nav";
 import Posts from "./HomeComp.tsx/Posts";
+import Welcome from "./HomeComp.tsx/Welcome";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -24,6 +25,7 @@ export interface POSTS {
 const Home = () => {
   axios.defaults.withCredentials = true;
   const navigate = useNavigate();
+  const [userData, setUserData] = useState<any>();
 
   useEffect(() => {
     axios
@@ -32,6 +34,7 @@ const Home = () => {
         if (!res.data.validUser) {
           navigate("/login");
         }
+        setUserData(res.data);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -51,27 +54,30 @@ const Home = () => {
       })
       .catch((err) => console.log(err));
   };
+  console.log(userData);
 
-  //   Fetch first two posts on initial mount
+  //   Fetch first post on initial mount
   useEffect(() => {
     axios
-      .get(`http://localhost:2200/userauth/getposts?page=${page}&limit=2`)
+      .get(`http://localhost:2200/userauth/getposts?page=${page}&limit=1`)
       .then((res) => {
         setPost(res.data);
-        setPage(3);
+        setPage(2);
       })
       .catch((err) => console.log(err));
   }, []);
 
-  // useEffect(() => {
-  //   fetchPosts();
-  // }, []);
-
   const handleScroll = (event: any) => {
     const { scrollTop, clientHeight, scrollHeight } = event.currentTarget;
-    if (scrollHeight - scrollTop === clientHeight && !loading) {
-      fetchPosts();
-      console.log("Fetching Posts");
+
+    if (scrollTop > 0) {
+      const scrollBottom = scrollHeight - (scrollTop + clientHeight);
+      const fetchThreshold = 200;
+
+      if (scrollBottom < fetchThreshold && !loading) {
+        fetchPosts();
+        console.log("Fetching Posts");
+      }
     }
   };
 
@@ -82,7 +88,7 @@ const Home = () => {
           <Grid item xs={1}>
             <Item
               style={{
-                height: "80vh",
+                height: "50vh",
                 overflow: "hidden",
                 textAlign: "center",
               }}
@@ -93,7 +99,7 @@ const Home = () => {
           <Grid item xs={7}>
             <Item
               style={{
-                height: "80vh",
+                height: "100vh",
                 overflow: "auto",
               }}
               onScroll={handleScroll}
@@ -110,10 +116,7 @@ const Home = () => {
           </Grid>
           <Grid item xs={4}>
             <Item style={{ height: "80vh", overflow: "hidden" }}>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti
-              quaerat explicabo dolores doloremque nostrum repudiandae
-              architecto veritatis vero quod harum fugit, itaque obcaecati iste
-              pariatur vel cupiditate consequuntur. Natus, officiis?
+              {userData && <Welcome username={userData.username} />}
             </Item>
           </Grid>
         </Grid>

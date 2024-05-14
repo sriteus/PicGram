@@ -9,7 +9,6 @@ import Collapse from "@mui/material/Collapse";
 import Avatar from "@mui/material/Avatar";
 import IconButton, { IconButtonProps } from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import { green, red } from "@mui/material/colors";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -73,7 +72,7 @@ const Posts: React.FC<POSTS> = ({ name, description, image }) => {
             </IconButton>
           }
           title={name}
-          subheader="September 14, 2016"
+          subheader={description}
         />
         <hr style={{ width: "80%" }} />
 

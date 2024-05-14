@@ -32,14 +32,14 @@ const Nav = () => {
         <CottageRoundedIcon fontSize="large" sx={{ marginTop: "15px" }} />
         Home
       </button>
-      <button onClick={handleButtonClick} className="button">
+      {/* <button onClick={handleButtonClick} className="button">
         <PublicRoundedIcon fontSize="large" />
         World
-      </button>
-      <button onClick={handleButtonClick} className="button">
+      </button> */}
+      {/* <button onClick={handleButtonClick} className="button">
         <MessageRoundedIcon fontSize="large" />
         DMs
-      </button>
+      </button> */}
       <button
         onClick={() => {
           navigate("/profile");
