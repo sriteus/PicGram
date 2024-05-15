@@ -99,7 +99,7 @@ const Home = () => {
           <Grid item xs={7}>
             <Item
               style={{
-                height: "100vh",
+                height: "80vh",
                 overflow: "auto",
               }}
               onScroll={handleScroll}
